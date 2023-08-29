@@ -3,10 +3,10 @@
 Provides the deletion of deprecates ecs ressources for ViPLab-Questions
 
 **Minimum ILIAS Version:**
-5.2.0
+8.3.0
 
 **Maximum ILIAS Version:**
-5.4.999
+8.999.999
 
 **Responsible Developer:**
 Per Pascal Seeland
