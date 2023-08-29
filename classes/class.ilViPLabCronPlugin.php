@@ -23,38 +23,35 @@ class ilViPLabCronPlugin extends ilCronHookPlugin
 	 */
 	public static function getInstance()
 	{
-		global $ilPluginAdmin;
+        if (self::$instance) {
+            return self::$instance;
+        }
 
-		if(self::$instance)
-		{
-			return self::$instance;
-		}
-		include_once './Services/Component/classes/class.ilPluginAdmin.php';
-		return self::$instance = ilPluginAdmin::getPluginObject(
-			self::CTYPE,
-			self::CNAME,
-			self::SLOT_ID,
-			self::PNAME
-		);
+        global $DIC;
+
+        $component_factory = $DIC['component.factory'];
+        $instance = $component_factory->getPlugin('viplabcron');
+
+        return self::$instance = $instance;
 	}
-	
+
 	/**
 	 * Get plugin name
 	 * @return string
 	 */
-	public function getPluginName()
+	public function getPluginName(): string
 	{
 		return self::PNAME;
 	}
-	
+
 	/**
 	 * Init auto load
 	 */
-	protected function init()
+	protected function init(): void
 	{
 		$this->initAutoLoad();
 	}
-		
+
 	/**
 	 * Init auto loader
 	 * @return void
@@ -85,23 +82,26 @@ class ilViPLabCronPlugin extends ilCronHookPlugin
 	 * @param type $a_id
 	 * @return \ilViPLabCronJob
 	 */
-	public function getCronJobInstance($a_id)
+	public function getCronJobInstance($a_id): ilCronJob
 	{
-		$job = new ilViPLabCronJob();
-		return $job;
+		return new ilViPLabCronJob();
 	}
-	
-	
+
+
 	/**
 	 * Get cron job instances
 	 * @global type $ilLog
 	 * @return \ilViPLabCronJob[]
 	 */
-	public function getCronJobInstances()
+	public function getCronJobInstances(): array
 	{
 		$job = new ilViPLabCronJob();
 		return array($job);
 	}
-	
+
+    protected function getClassesDirectory() : string
+    {
+        return $this->getDirectory() . "/classes";
+    }
+
 }
-?>

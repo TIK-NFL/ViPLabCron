@@ -17,73 +17,52 @@ class ilViPLabCronJob extends ilCronJob
 	 * Get id
 	 * @return type
 	 */
-	public function getId()
+	public function getId(): string
 	{
 		return ilViPLabCronPlugin::getInstance()->getId();
 	}
 	
-	public function getTitle()
+	public function getTitle(): string
 	{		
 		return ilViPLabCronPlugin::PNAME;
 	}
 	
-	public function getDescription()
+	public function getDescription(): string
 	{
 		return ilViPLabCronPlugin::getInstance()->txt('cron_job_info');
 	}
 	
-	public function getDefaultScheduleType()
+	public function getDefaultScheduleType(): int
 	{
 		return self::SCHEDULE_TYPE_IN_MINUTES;
 	}
 	
-	public function getDefaultScheduleValue()
+	public function getDefaultScheduleValue(): ?int
 	{
 		return parent::SCHEDULE_TYPE_IN_HOURS;
 	}
 	
-	public function hasAutoActivation()
+	public function hasAutoActivation(): bool
 	{
 		return false;
 	}
 	
-	public function hasFlexibleSchedule()
+	public function hasFlexibleSchedule(): bool
 	{
 		return true;
 	}
 	
-	public function hasCustomSettings() 
+	public function hasCustomSettings(): bool
 	{
 		return false;
 	}
 	
-	public function run()
+	public function run(): ilCronJobResult
 	{
 		$result = new ilCronJobResult();
-
-		$active = $GLOBALS['ilPluginAdmin']->getActivePluginsForSlot(
-			IL_COMP_MODULE,
-			'TestQuestionPool',
-			'qst'
-		);
-		foreach($active as $num => $info)
-		{
-			if($info == 'assViPLab')
-			{
-				$obj = ilPluginAdmin::getPluginObject(
-					IL_COMP_MODULE,
-					'TestQuestionPool',
-					'qst', 
-					$info
-				);
-					
-				if($obj instanceof ilassViPLabPlugin )
-				{
-					$obj->handleCronJob();
-					$result->setStatus(ilCronJobResult::STATUS_OK);
-				}
-			}
-		}		
+        $plugin = ilassViPLabPlugin::getInstance();
+        $plugin->handleCronJob();
+        $result->setStatus(ilCronJobResult::STATUS_OK);
 
 		return $result;
 	}
@@ -98,5 +77,3 @@ class ilViPLabCronJob extends ilCronJob
 	}
 
 }
-
-?>
