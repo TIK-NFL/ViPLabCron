@@ -11,16 +11,10 @@ class ilViPLabCronPlugin extends ilCronHookPlugin
 {
 	private static $instance = null;
 
-	const CTYPE = 'Services';
-	const CNAME = 'Cron';
-	const SLOT_ID = 'crnhk';
-	const PNAME = 'ViPLabCron';
+	const PLUGIN_NAME = 'ViPLabCron';
+    const PLUGIN_ID = 'viplabcron';
 
-	/**
-	 * Get singleton instance
-	 * @global ilPluginAdmin $ilPluginAdmin
-	 * @return \ilViPLabCronPlugin
-	 */
+
 	public static function getInstance()
 	{
         if (self::$instance) {
@@ -28,22 +22,15 @@ class ilViPLabCronPlugin extends ilCronHookPlugin
         }
 
         global $DIC;
-
-        $component_factory = $DIC['component.factory'];
-        $instance = $component_factory->getPlugin('viplabcron');
-
-        return self::$instance = $instance;
+        $component_factory = $DIC["component.factory"];
+        return self::$instance = $component_factory->getPlugin(self::PLUGIN_ID);
 	}
-
-	/**
-	 * Get plugin name
-	 * @return string
-	 */
+	
 	public function getPluginName(): string
 	{
-		return self::PNAME;
+		return self::PLUGIN_NAME;
 	}
-
+	
 	/**
 	 * Init auto load
 	 */
@@ -51,7 +38,7 @@ class ilViPLabCronPlugin extends ilCronHookPlugin
 	{
 		$this->initAutoLoad();
 	}
-
+		
 	/**
 	 * Init auto loader
 	 * @return void
@@ -68,35 +55,22 @@ class ilViPLabCronPlugin extends ilCronHookPlugin
 	 *
 	 * @param string class name
 	 */
-	private final function autoLoad($a_classname)
+	private function autoLoad($a_classname)
 	{
 		$class_file = $this->getClassesDirectory().'/class.'.$a_classname.'.php';
-		if(@include_once($class_file))
-		{
+		if(@include_once($class_file)) {
 			return;
 		}
 	}
 
-	/**
-	 * Get cron job instance
-	 * @param type $a_id
-	 * @return \ilViPLabCronJob
-	 */
-	public function getCronJobInstance($a_id): ilCronJob
+	public function getCronJobInstance($jobId): ilCronJob
 	{
 		return new ilViPLabCronJob();
 	}
 
-
-	/**
-	 * Get cron job instances
-	 * @global type $ilLog
-	 * @return \ilViPLabCronJob[]
-	 */
 	public function getCronJobInstances(): array
 	{
-		$job = new ilViPLabCronJob();
-		return array($job);
+		return array(new ilViPLabCronJob());
 	}
 
     protected function getClassesDirectory() : string

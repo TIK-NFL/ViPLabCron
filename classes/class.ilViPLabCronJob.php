@@ -4,19 +4,12 @@
 include_once "Services/Cron/classes/class.ilCronJob.php";
 
 /**
- * fhoev import plugin
- * 
+ *
  * @author Stefan Meyer <smeyer.ilias@gmx.de>
  *
  */
 class ilViPLabCronJob extends ilCronJob
 {
-	protected $plugin; // [ilCronHookPlugin]
-	
-	/**
-	 * Get id
-	 * @return type
-	 */
 	public function getId(): string
 	{
 		return ilViPLabCronPlugin::getInstance()->getId();
@@ -24,7 +17,7 @@ class ilViPLabCronJob extends ilCronJob
 	
 	public function getTitle(): string
 	{		
-		return ilViPLabCronPlugin::PNAME;
+		return ilViPLabCronPlugin::PLUGIN_NAME;
 	}
 	
 	public function getDescription(): string
@@ -59,21 +52,14 @@ class ilViPLabCronJob extends ilCronJob
 	
 	public function run(): ilCronJobResult
 	{
-		$result = new ilCronJobResult();
-        $plugin = ilassViPLabPlugin::getInstance();
-        $plugin->handleCronJob();
-        $result->setStatus(ilCronJobResult::STATUS_OK);
+        $result = new ilCronJobResult();
+        $assViPLabPlugin = ilassViPLabPlugin::getInstance();
 
-		return $result;
+        if ($assViPLabPlugin->isActive()) {
+            $assViPLabPlugin->handleCronJob();
+            $result->setStatus(ilCronJobResult::STATUS_OK);
+        }
+
+        return $result;
 	}
-
-	/**
-	 * get viplab plugin
-	 * @return \ilViPLabCronPlugin
-	 */
-	public function getPlugin()
-	{
-		return ilViPLabCronPlugin::getInstance();
-	}
-
 }
