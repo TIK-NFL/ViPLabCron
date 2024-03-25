@@ -32,7 +32,7 @@ class ilViPLabCronJob extends ilCronJob
 	
 	public function getDefaultScheduleValue(): ?int
 	{
-		return parent::SCHEDULE_TYPE_IN_HOURS;
+		return 1;
 	}
 	
 	public function hasAutoActivation(): bool
