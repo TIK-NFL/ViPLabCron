@@ -3,6 +3,8 @@
 
 include_once "Services/Cron/classes/class.ilCronJob.php";
 
+use \ILIAS\Cron\Schedule\CronJobScheduleType;
+
 /**
  *
  * @author Stefan Meyer <smeyer.ilias@gmx.de>
@@ -25,9 +27,9 @@ class ilViPLabCronJob extends ilCronJob
 		return ilViPLabCronPlugin::getInstance()->txt('cron_job_info');
 	}
 	
-	public function getDefaultScheduleType(): int
-	{
-		return self::SCHEDULE_TYPE_IN_MINUTES;
+	public function getDefaultScheduleType(): CronJobScheduleType
+    {
+        return CronJobScheduleType::SCHEDULE_TYPE_IN_MINUTES;
 	}
 	
 	public function getDefaultScheduleValue(): ?int
